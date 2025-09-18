@@ -13,7 +13,7 @@ namespace MailExercise
         {
             public EmailService(string subject, string content) : base(subject, content)
             {
-
+                string name = "";
             }
             protected void SendMail(string fromAddress, string toAdress, string subject, string content)
             {
