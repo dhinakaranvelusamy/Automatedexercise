@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Automatedexercise\AutomatedExercise.csproj" />
+    <PackageReference Include="MailKit" Version="4.13.0" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using AutomatedExercise;
+using MailExercise;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -11,10 +12,6 @@ namespace Automatedexercise
         {
             EmailSender obj = new EmailSender();
             obj.SendEmail();
-
-            businessLayer obj = new businessLayer();
-
-
         }
     }
 }
