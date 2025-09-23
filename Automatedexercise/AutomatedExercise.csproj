@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JasonCRUD Exercise\JasonCRUD Exercise.csproj" />
     <ProjectReference Include="..\MailExercise\MailExercise.csproj" />
   </ItemGroup>
 
