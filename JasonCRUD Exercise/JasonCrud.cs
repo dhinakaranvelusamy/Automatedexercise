@@ -1,5 +1,4 @@
-﻿// JasonCRUD.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,9 +8,9 @@ namespace JasonLibrary
 {
     public class JasonCRUD
     {
-        private List<JasonStudentInfo> Info = new List<JasonStudentInfo>();
-        private int nextRoll = 1;
-        private string filePath = "students.json";
+        public List<StudentInfo> Info = new List<StudentInfo>();
+        public int nextRoll = 1;
+        public string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "data.json");
 
         public JasonCRUD()
         {
@@ -20,42 +19,35 @@ namespace JasonLibrary
                 nextRoll = Info.Max(x => x.Rollno) + 1;
         }
 
-        // CREATE
-        public void AddJason(string name, int age, int standard)
+        // CREATE STUDENT
+        public void AddJason(StudentInfo info)
         {
-            var student = new JasonStudentInfo
-            {
-                Rollno = nextRoll++,
-                Name = name,
-                Age = age,
-                Standard = standard
-            };
-            Info.Add(student);
+            Info.Add(info);
             SaveData();
         }
 
-        // READ
-        public List<JasonStudentInfo> GetAll()
+        // READ STUDENT
+        public List<StudentInfo> GetAll()
         {
             return Info;
         }
 
-        // UPDATE
-        public bool UpdateJason(int rollno, string newName, int newAge, int newStandard)
+        // UPDATE STUDENT
+        public bool UpdateJason(int rollno, string newname, int newage, int newmobile)
         {
             var student = Info.FirstOrDefault(x => x.Rollno == rollno);
             if (student != null)
             {
-                student.Name = newName;
-                student.Age = newAge;
-                student.Standard = newStandard;
+                student.Name = newname;
+                student.Age = newage;
+                student.Mobile = newmobile;
                 SaveData();
                 return true;
             }
             return false;
         }
 
-        // DELETE
+        // DELETE STUDENT
         public bool DeleteJason(int rollno)
         {
             var student = Info.FirstOrDefault(x => x.Rollno == rollno);
@@ -68,30 +60,27 @@ namespace JasonLibrary
             return false;
         }
 
-        // SEARCH
-        public List<JasonStudentInfo> SearchByName(string keyword)
+        // SEARCH STUDENT
+        public List<StudentInfo> SearchByName(string keyword)
         {
             return Info.Where(x => x.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        // JSON Persistence
+        // JSON  
         private void SaveData()
         {
             var json = JsonSerializer.Serialize(Info, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, json);
         }
-
         private void LoadData()
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
+                Directory.CreateDirectory("Data");
+                File.WriteAllText(filePath, "[]");
+            }
                 var json = File.ReadAllText(filePath);
-                Info = JsonSerializer.Deserialize<List<JasonStudentInfo>>(json) ?? new List<JasonStudentInfo>();
-            }
-            else
-            {
-                Info = new List<JasonStudentInfo>();
-            }
+            Info = JsonSerializer.Deserialize<List<StudentInfo>>(json) ?? new List<StudentInfo>();        
         }
     }
 }
