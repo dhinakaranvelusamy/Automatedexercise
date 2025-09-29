@@ -8,6 +8,7 @@ namespace JasonLibrary
         public string Name { get; set; }
         public int Rollno { get; set; }
         public int Age { get; set; }
-        public int Mobile { get; set; }
+        public long Mobile { get; set; }
     }
+    
 }

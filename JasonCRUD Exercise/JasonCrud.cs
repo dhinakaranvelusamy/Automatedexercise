@@ -9,14 +9,11 @@ namespace JasonLibrary
     public class JasonCRUD
     {
         public List<StudentInfo> Info = new List<StudentInfo>();
-        public int nextRoll = 1;
         public string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "data.json");
 
         public JasonCRUD()
         {
             LoadData();
-            if (Info.Any())
-                nextRoll = Info.Max(x => x.Rollno) + 1;
         }
 
         // CREATE STUDENT
@@ -26,14 +23,14 @@ namespace JasonLibrary
             SaveData();
         }
 
-        // READ STUDENT
+        // READ ALL
         public List<StudentInfo> GetAll()
         {
             return Info;
         }
 
-        // UPDATE STUDENT
-        public bool UpdateJason(int rollno, string newname, int newage, int newmobile)
+        // UPDATE
+        public bool UpdateJason(int rollno, string newname, int newage, long newmobile)
         {
             var student = Info.FirstOrDefault(x => x.Rollno == rollno);
             if (student != null)
@@ -47,7 +44,7 @@ namespace JasonLibrary
             return false;
         }
 
-        // DELETE STUDENT
+        // DELETE
         public bool DeleteJason(int rollno)
         {
             var student = Info.FirstOrDefault(x => x.Rollno == rollno);
@@ -60,27 +57,42 @@ namespace JasonLibrary
             return false;
         }
 
-        // SEARCH STUDENT
+        // SEARCH: NAME
         public List<StudentInfo> SearchByName(string keyword)
         {
             return Info.Where(x => x.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        // JSON  
+        // SEARCH: ROLL NUMBER
+        public StudentInfo SearchByRollNo(int rollno)
+        {
+            return Info.FirstOrDefault(x => x.Rollno == rollno);
+        }
+
+        // SEARCH: MOBILE
+        public StudentInfo SearchByMobile(long mobile)
+        {
+            return Info.FirstOrDefault(x => x.Mobile == mobile);
+        }
+
+        // JSON FILE OPERATIONS
         private void SaveData()
         {
             var json = JsonSerializer.Serialize(Info, new JsonSerializerOptions { WriteIndented = true });
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             File.WriteAllText(filePath, json);
         }
+
         private void LoadData()
         {
             if (!File.Exists(filePath))
             {
                 Directory.CreateDirectory("Data");
-                File.WriteAllText(filePath, "[]");
+                File.WriteAllText(filePath,"[]");
             }
-                var json = File.ReadAllText(filePath);
-            Info = JsonSerializer.Deserialize<List<StudentInfo>>(json) ?? new List<StudentInfo>();        
+
+            var json = File.ReadAllText(filePath);
+            Info = JsonSerializer.Deserialize<List<StudentInfo>>(json) ?? new List<StudentInfo>();
         }
     }
 }

@@ -1,147 +1,185 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-using System.Text;
 using JasonLibrary;
-using System.Threading.Tasks;
 
 namespace StudentinFormation
 {
-
     class StudentInfos
     {
-
         public JasonCRUD stud = new JasonCRUD();
 
-        public void list()
+        public void List()
         {
             do
-
-            {
-                Console.WriteLine("===== XYZ SCHOOL , PALANI=====");
-                Console.WriteLine("enter the any numbers");
+            {               
+                Console.WriteLine("===== SPHSS SCHOOL , PALANI =====");
                 Console.WriteLine("1. Create Student");
                 Console.WriteLine("2. Read Students");
                 Console.WriteLine("3. Update Student");
                 Console.WriteLine("4. Delete Student");
-                Console.WriteLine("5. Serchstudent");
-                Console.WriteLine("6. Exit");
-                Console.Write("Enter Choice: ");
-                Console.WriteLine();
+                Console.WriteLine("5. Search by Name");
+                Console.WriteLine("6. Search by Roll Number");
+                Console.WriteLine("7. Search by Mobile Number");
+                Console.WriteLine("8. Exit");
+                Console.Write("\nEnter Choice: ");
+
                 if (!int.TryParse(Console.ReadLine(), out int choice))
                 {
-                    Console.WriteLine("invaild the option enter to vaild number");
+                    Console.WriteLine("Invalid input. Please enter a number.");
                     Console.ReadKey();
                     continue;
-                }
+                }                
+
                 switch (choice)
                 {
                     case 1:
-                        Addstudent();
+                        AddStudent();
                         break;
                     case 2:
-                        Readstudent();
+                        ReadStudents();
                         break;
                     case 3:
-                        Updatestudent();
+                        UpdateStudent();
                         break;
                     case 4:
                         DeleteStudent();
                         break;
                     case 5:
-                        SearchStdudent();
+                        SearchByName();
                         break;
                     case 6:
+                        SearchByRollNumber();
+                        break;
                     case 7:
+                        SearchByMobile();
+                        break;
                     case 8:
-                    case 9:
-
-                        Console.WriteLine("EXIT");
-                        Console.WriteLine("exiting the class");
+                        Console.WriteLine("Exiting...");
                         return;
                     default:
-                        Console.WriteLine("enter invaild number ,  please enetr the vaild number given above");
+                        Console.WriteLine("Invalid choice.");
                         break;
-                }
+                }               
             } while (true);
         }
-        public void Addstudent()
+
+        public void AddStudent()
         {
             var info = new StudentInfo();
-            Console.WriteLine("enter the name ");
+
+            Console.Write("Enter Name: ");
             info.Name = Console.ReadLine();
-            Console.WriteLine("enter the roll no");
+
+            Console.Write("Enter Roll No: ");
             info.Rollno = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("enter the  age");
+
+            Console.Write("Enter Age: ");
             info.Age = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("enter the  mobile");
-            info.Mobile = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Enter Mobile: ");
+            info.Mobile = Convert.ToInt64(Console.ReadLine());
+
             stud.AddJason(info);
-           
-            Console.WriteLine("students are add successfully");
+            Console.WriteLine("Student added successfully.");
         }
-        public void Readstudent()
+
+        public void ReadStudents()
         {
             var students = stud.GetAll();
 
-            Console.WriteLine("\n--- Student List ---");
+            if (students.Count == 0)
+            {
+                Console.WriteLine("No students found.");
+                return;
+            }
 
-            Console.WriteLine(students.Count == 0 ? "! No records found."  : "");
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
             foreach (var s in students)
             {
                 Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
-                Console.WriteLine();
             }
         }
-        public void Updatestudent()
+
+        public void UpdateStudent()
         {
-            Console.Write("Enter Roll Number to Update: ");
-
+            Console.Write("Enter Roll Number to update: ");
             int roll = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
+
             Console.Write("Enter New Name: ");
-            string newName = Console.ReadLine();
-            Console.WriteLine();
+            string name = Console.ReadLine();
+
             Console.Write("Enter New Age: ");
-            int newAge = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
+            int age = Convert.ToInt32(Console.ReadLine());
+
             Console.Write("Enter New Mobile: ");
-            int newMobile = Convert.ToInt32(Console.ReadLine());
+            long mobile = Convert.ToInt64(Console.ReadLine());
 
-            bool success = stud.UpdateJason(roll, newName, newAge, newMobile);
+            bool updated = stud.UpdateJason(roll, name, age, mobile);
 
-            Console.WriteLine(success  ? " Student updated successfully.": " Student not found.");
+            Console.WriteLine(updated ? "Student updated successfully." : "Student not found.");
         }
+
         public void DeleteStudent()
         {
-            Console.Write("Enter Roll Number to Delete: ");
+            Console.Write("Enter Roll Number to delete: ");
             int roll = Convert.ToInt32(Console.ReadLine());
-            
-            Console.WriteLine();
-            bool Delete = stud.DeleteJason(roll);
-            
-           
 
-            Console.WriteLine(Delete ? "Student deleted successfully.": " Student not found.");
+            bool deleted = stud.DeleteJason(roll);
+
+            Console.WriteLine(deleted ? "Student deleted successfully." : "Student not found.");
         }
-        public void SearchStdudent()
+
+        public void SearchByName()
         {
-            Console.Write("Enter name or part of name to search: ");
-            string keyword = Console.ReadLine();
+            Console.Write("Enter name to search: ");
+            string name = Console.ReadLine();
 
-            var results = stud.SearchByName(keyword);
+            var results = stud.SearchByName(name);
 
-            Console.WriteLine(results.Count == 0? " No matching students found." : $" Found {results.Count} student(s):");
+            if (results.Count == 0)
+            {
+                Console.WriteLine("No matching students found.");
+                return;
+            }
+
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
-
             foreach (var s in results)
             {
                 Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
-                Console.WriteLine();
+            }
+        }
+
+        public void SearchByRollNumber()
+        {
+            Console.Write("Enter Roll Number to search: ");
+            int roll = Convert.ToInt32(Console.ReadLine());
+
+            var student = stud.SearchByRollNo(roll);
+
+            if (student == null)
+            {
+                Console.WriteLine("Student not found.");
+                return;
             }
 
+            Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
         }
-    }       
+
+        public void SearchByMobile()
+        {
+            Console.Write("Enter Mobile Number to search: ");
+            long mobile = Convert.ToInt64(Console.ReadLine());
+
+            var student = stud.SearchByMobile(mobile);
+
+            if (student == null)
+            {
+                Console.WriteLine("Student not found.");
+                return;
+            }
+            Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
+        }
+    }
 }

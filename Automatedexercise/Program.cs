@@ -18,7 +18,7 @@ namespace Automatedexercise
 
 
             StudentInfos student = new StudentInfos();
-            student.list();
+            student.List();
 
 
 
