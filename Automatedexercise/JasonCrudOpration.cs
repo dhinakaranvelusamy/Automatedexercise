@@ -7,12 +7,13 @@ namespace StudentinFormation
     class StudentInfos
     {
         public JasonCRUD stud = new JasonCRUD();
-
         public void List()
         {
             do
-            {               
+            {
+                Console.WriteLine();
                 Console.WriteLine("===== SPHSS SCHOOL , PALANI =====");
+                Console.WriteLine("ENTER THE ABOVE ANY  NUMBER ! !");
                 Console.WriteLine("1. Create Student");
                 Console.WriteLine("2. Read Students");
                 Console.WriteLine("3. Update Student");
@@ -26,6 +27,7 @@ namespace StudentinFormation
                 if (!int.TryParse(Console.ReadLine(), out int choice))
                 {
                     Console.WriteLine("Invalid input. Please enter a number.");
+
                     Console.ReadKey();
                     continue;
                 }                
@@ -37,7 +39,7 @@ namespace StudentinFormation
                         break;
                     case 2:
                         ReadStudents();
-                        break;
+                        continue;
                     case 3:
                         UpdateStudent();
                         break;
@@ -94,6 +96,7 @@ namespace StudentinFormation
             }
 
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine();
             foreach (var s in students)
             {
                 Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
@@ -107,6 +110,7 @@ namespace StudentinFormation
 
             Console.Write("Enter New Name: ");
             string name = Console.ReadLine();
+            
 
             Console.Write("Enter New Age: ");
             int age = Convert.ToInt32(Console.ReadLine());
@@ -123,6 +127,7 @@ namespace StudentinFormation
         {
             Console.Write("Enter Roll Number to delete: ");
             int roll = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
 
             bool deleted = stud.DeleteJason(roll);
 
@@ -141,8 +146,8 @@ namespace StudentinFormation
                 Console.WriteLine("No matching students found.");
                 return;
             }
-
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine();
             foreach (var s in results)
             {
                 Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
@@ -153,6 +158,7 @@ namespace StudentinFormation
         {
             Console.Write("Enter Roll Number to search: ");
             int roll = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
 
             var student = stud.SearchByRollNo(roll);
 
@@ -163,6 +169,7 @@ namespace StudentinFormation
             }
 
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+
             Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
         }
 
@@ -170,6 +177,7 @@ namespace StudentinFormation
         {
             Console.Write("Enter Mobile Number to search: ");
             long mobile = Convert.ToInt64(Console.ReadLine());
+            Console.WriteLine();
 
             var student = stud.SearchByMobile(mobile);
 
@@ -179,6 +187,7 @@ namespace StudentinFormation
                 return;
             }
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine();
             Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
         }
     }
