@@ -4,7 +4,7 @@ using JasonLibrary;
 
 namespace StudentinFormation
 {
-    class StudentInfos
+    class StudentInfoss
     {
         public JasonCRUD stud = new JasonCRUD();
         public void List()
@@ -83,6 +83,7 @@ namespace StudentinFormation
 
             stud.AddJason(info);
             Console.WriteLine("Student added successfully.");
+
         }
 
         public void ReadStudents()

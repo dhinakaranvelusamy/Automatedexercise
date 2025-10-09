@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
     <ProjectReference Include="..\JasonCRUD Exercise\JasonCRUD Exercise.csproj" />
     <ProjectReference Include="..\MailExercise\MailExercise.csproj" />
   </ItemGroup>

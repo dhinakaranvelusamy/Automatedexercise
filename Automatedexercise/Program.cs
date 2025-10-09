@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using JasonLibrary;
 using StudentinFormation;
-
+using DataAccessLayer ;
 
 namespace Automatedexercise
 {
@@ -17,12 +17,15 @@ namespace Automatedexercise
             //obj.SendEmail();
 
 
-            StudentInfos student = new StudentInfos();
-            student.List();
+            /*StudentInfos student = new StudentInfos();
+            student.List();*/
+
+
+            StudentInfromation cap = new StudentInfromation();
+            cap.List();
 
 
 
-            
         }
     }
 }
