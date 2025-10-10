@@ -2,15 +2,16 @@
 using DataAccessLayer;
 using System.Collections.Generic;
 
-namespace StudentinFormation
+namespace StudentInFormation
 {
-    class StudentInfromation
+    public class StudentInformation
     {
-        private readonly StudentsRepository join = new StudentsRepository();
+        private readonly StudentsRepository studRepo = new StudentsRepository();
 
         public void List()
         {
-            while (true)
+            int choice;
+            do
             {
                 Console.WriteLine("===== SPHSS SCHOOL - PALANI =====");
                 Console.WriteLine("1. Add Student");
@@ -18,13 +19,14 @@ namespace StudentinFormation
                 Console.WriteLine("3. Update Student");
                 Console.WriteLine("4. Delete Student");
                 Console.WriteLine("5. Search Students by Name");
-                Console.WriteLine("6. Exit");
+                Console.WriteLine("6, Search Students By Id");
+                Console.WriteLine("7. Exit");
                 Console.Write("Enter choice: ");
 
-                if (!int.TryParse(Console.ReadLine(), out int choice))
+                if (!int.TryParse(Console.ReadLine(), out choice))
                 {
-                    Console.WriteLine("Invalid input. Enter a number.");
-                    continue;
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                    break;
                 }
 
                 switch (choice)
@@ -44,14 +46,17 @@ namespace StudentinFormation
                     case 5:
                         SearchStudentsByName();
                         break;
-                    case 6:
-                        Console.WriteLine("Exiting...");
-                        return;
-                    default:
-                        Console.WriteLine("Invalid choice");
+                    case 6: 
+                        SearchStudentByID();
+                        break;                    
+                    case 7:
+                       Console.WriteLine("Exiting...");
                         break;
+                    default:
+                        Console.WriteLine("Invalid choice. Try again.");
+                        continue;
                 }
-            }
+            } while (choice != 6);
         }
 
         private void AddStudent()
@@ -70,28 +75,26 @@ namespace StudentinFormation
             Console.Write("Enter Mobile Number: ");
             student.MobileNumber = long.Parse(Console.ReadLine());
 
-            bool added = join.AddStudent(student);
+            bool added = studRepo.AddStudent(student);
             Console.WriteLine(added ? "Student added successfully." : "Failed to add student.");
         }
 
         private void DisplayAllStudents()
         {
-            var students = join.GetStudents();
+            var students = studRepo.GetStudents();
+
             if (students.Count == 0)
             {
                 Console.WriteLine("No students found.");
                 return;
             }
 
-            // Header with clear and consistent column widths
             Console.WriteLine($"{"Id",-5} {"Name",-20} {"RollNo",-10} {"Age",-5} {"MobileNumber",-15}");
-            Console.WriteLine(new string('-', 60)); // separator line
+            Console.WriteLine(new string('-', 60));
 
             foreach (var s in students)
             {
-                // Pad or truncate strings to fixed width for alignment
-                string name = s.Name.Length > 20 ? s.Name.Substring(0, 17)  : s.Name;
-
+               string name = s.Name.Length > 20 ? s.Name.Substring(0, 17) + "..." : s.Name;
                 Console.WriteLine($"{s.id,-5} {name,-20} {s.RollNumber,-10} {s.age,-5} {s.MobileNumber,-15}");
             }
         }
@@ -99,52 +102,50 @@ namespace StudentinFormation
         private void UpdateStudent()
         {
             Console.Write("Enter Id of student to update: ");
-            int id = int.Parse(Console.ReadLine());
-            Console.WriteLine();
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid Id.");
+                return;
+            }
 
-
-            var student = join.GetStudentByID(id);
+            var student = studRepo.GetStudentByID(id);
             if (student == null)
             {
                 Console.WriteLine("Student not found.");
                 return;
             }
 
-            Console.Write($"Enter new name (current:{student.Name}):");
+            Console.Write($"Enter new name (current: {student.Name}): ");
             string name = Console.ReadLine();
-            Console.WriteLine();
+            if (!string.IsNullOrEmpty(name))
+                student.Name = name;
 
-            if (!string.IsNullOrEmpty(name)) student.Name = name;
-
-            Console.Write($"Enter new roll number (current:{student.RollNumber}):");
+            Console.Write($"Enter new roll number (current: {student.RollNumber}): ");
             string rollInput = Console.ReadLine();
             if (int.TryParse(rollInput, out int roll)) student.RollNumber = roll;
-            Console.WriteLine();
 
-            Console.Write($"Enter new age (current:{student.age}):");
+            Console.Write($"Enter new age (current: {student.age}): ");
             string ageInput = Console.ReadLine();
             if (short.TryParse(ageInput, out short age)) student.age = age;
-            Console.WriteLine();
 
             Console.Write($"Enter new mobile number (current: {student.MobileNumber}): ");
             string mobileInput = Console.ReadLine();
-            Console.WriteLine();
-
             if (long.TryParse(mobileInput, out long mobile)) student.MobileNumber = mobile;
 
-            bool updated = join.UpdateStudent(student);
+            bool updated = studRepo.UpdateStudent(student);
             Console.WriteLine(updated ? "Student updated." : "Failed to update student.");
-            Console.WriteLine();
-
         }
 
         private void DeleteStudent()
         {
             Console.Write("Enter Id of student to delete: ");
-            int id = int.Parse(Console.ReadLine());
-            Console.WriteLine();
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid Id.");
+                return;
+            }
 
-            bool deleted = join.DeleteStudent(id);
+            bool deleted = studRepo.DeleteStudent(id);
             Console.WriteLine(deleted ? "Student deleted." : "Student not found.");
         }
 
@@ -152,21 +153,44 @@ namespace StudentinFormation
         {
             Console.Write("Enter name to search: ");
             string name = Console.ReadLine();
-            Console.WriteLine();
 
-            var results = join.SearchStudentsByName(name);
+            var results = studRepo.SearchStudentsByName(name);
             if (results.Count == 0)
             {
                 Console.WriteLine("No students found.");
                 return;
             }
 
-            Console.WriteLine($"{"Id",-5} {"Name",-20} {"RollNo",-8} {"Age",-5} {"MobileNumber"}");
+            Console.WriteLine($"{"Id",-5} {"Name",-20} {"RollNo",-10} {"Age",-5} {"MobileNumber",-15}");
+            Console.WriteLine(new string('-', 60));
             foreach (var s in results)
             {
-                Console.WriteLine($"{s.id,-5} {s.Name,-20} {s.RollNumber,-8} {s.age,-5} {s.MobileNumber}");
+                string Name = s.Name.Length > 20 ? s.Name.Substring(0, 17) + "..." : s.Name;
+                Console.WriteLine($"{s.id,-5} {Name,-20} {s.RollNumber,-10} {s.age,-5} {s.MobileNumber,-15}");
             }
         }
+        private void SearchStudentByID()
+        {
+            Console.Write("Enter Student ID to search: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid ID.");
+                return;
+            }
+            
+            var student = studRepo.SearchStudentByID(id);
+            if (student == null)
+            {
+                Console.WriteLine("Student not found.");
+            }
+            else
+            {
+                Console.WriteLine($"{"Id",-5} {"Name",-20} {"RollNo",-10} {"Age",-5} {"MobileNumber",-15}");
+                Console.WriteLine(new string('-', 60));
+                string Name = student.Name.Length > 20 ? student.Name.Substring(0, 17) + "..." : student.Name;
+                Console.WriteLine($"{student.id,-5} {Name,-20} {student.RollNumber,-10} {student.age,-5} {student.MobileNumber,-15}");
+            }
+        }
+
     }
 }
-    

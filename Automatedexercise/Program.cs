@@ -4,8 +4,8 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using JasonLibrary;
-using StudentinFormation;
-using DataAccessLayer ;
+using DataAccessLayer;
+using StudentInFormation;
 
 namespace Automatedexercise
 {
@@ -21,7 +21,7 @@ namespace Automatedexercise
             student.List();*/
 
 
-            StudentInfromation cap = new StudentInfromation();
+            var cap = new StudentInformation();
             cap.List();
 
 

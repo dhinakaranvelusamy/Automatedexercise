@@ -1,84 +1,175 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using Dapper;
+using System.Linq;
 
 namespace DataAccessLayer
 {
     public class StudentsRepository
     {
-        private string connectionString = "Server=DESKTOP-1U0BM0H\\SQLEXPRESS;Database=Bacth11SQLQuery;User Id=sa;Password=Anaiyaan@123;";
-        private readonly string Sql = "SELECT * FROM StudentDetails";
-        // Create
+        private readonly string connectionString = "Server=DESKTOP-1U0BM0H\\SQLEXPRESS;Database=Bacth11SQLQuery;User Id=sa;Password=Anaiyaan@123;";
+
         public bool AddStudent(StudentDetails student)
         {
-                var connection = new SqlConnection(connectionString);
-                var sql = "INSERT INTO StudentDetails (Name, RollNumber, Age, MobileNumber) VALUES (@Name, @RollNumber, @Age, @MobileNumber)";
+            try
+            {
+                 var connection = new SqlConnection(connectionString);
+                var parameters = new
+                {
+                    Name = student.Name,
+                    RollNumber = student.RollNumber,
+                    Age = student.age,
+                    MobileNumber = student.MobileNumber
+                };
                 connection.Open();
-                var affected = connection.Execute(sql, student);
-                connection.Close();
+                int affected = connection.Execute("sp_AddStudent", parameters, commandType: CommandType.StoredProcedure);
                 return affected > 0;
-          
+            }
+            catch(SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return false;
+            }
         }
 
-        // Read all
         public List<StudentDetails> GetStudents()
         {
-            var connection = new SqlConnection(connectionString);
-            connection.Open();
-            var sql = "SELECT * FROM StudentDetails";
-            connection.Close();
-            return connection.Query<StudentDetails>(sql).ToList();
-        
-        }   
+            try
+            {
+                using var connection = new SqlConnection(connectionString);
+                connection.Open();
+                return connection.Query<StudentDetails>("Getallstudent", commandType: CommandType.StoredProcedure).ToList();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return new List<StudentDetails>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return new List<StudentDetails>();
+            }
+        }
 
-        // Read by ID
         public StudentDetails GetStudentByID(int id)
         {
-            var connection = new SqlConnection(connectionString);
-
+            try
+            {
+                using var connection = new SqlConnection(connectionString);
+                var parameters = new { StudentID = id };
                 connection.Open();
-               var sql = "SELECT * FROM StudentDetails WHERE Id = @Id";
-                connection.Close();
-                return connection.QueryFirstOrDefault<StudentDetails>(sql, new { Id = id });
-            
+                return connection.QueryFirstOrDefault<StudentDetails>("GetStudentByID", parameters, commandType: CommandType.StoredProcedure);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return null;
+            }
         }
 
-        // Update
         public bool UpdateStudent(StudentDetails student)
         {
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                var sql = "UPDATE StudentDetails SET Name=@Name, RollNumber=@RollNumber, Age=@Age, MobileNumber=@MobileNumber WHERE Id=@Id";
+                using var connection = new SqlConnection(connectionString);
+                var parameters = new
+                {
+                    StudentID = student.id,
+                    Name = student.Name,
+                    Age = student.age,
+                    Rollnumber = student.RollNumber
+                };
                 connection.Open();
-                var affected = connection.Execute(sql, student);
-                connection.Close();
+                int affected = connection.Execute("UpdateStudent", parameters, commandType: CommandType.StoredProcedure);
                 return affected > 0;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return false;
             }
         }
 
-        // Delete
         public bool DeleteStudent(int id)
         {
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                var sql = "DELETE FROM StudentDetails WHERE Id=@Id";
+                using var connection = new SqlConnection(connectionString);
+                var parameters = new { StudentID = id };
                 connection.Open();
-                var affected = connection.Execute(sql, new { Id = id });
-                connection.Close();
+                int affected = connection.Execute("DeleteStudent", parameters, commandType: CommandType.StoredProcedure);
                 return affected > 0;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return false;
             }
         }
 
-        // Search by name
         public List<StudentDetails> SearchStudentsByName(string name)
         {
-            var connection = new SqlConnection(connectionString);
-            connection.Open();
-            var sql = "SELECT * FROM StudentDetails WHERE Name LIKE @Name";
-            connection.Close();
-            return connection.Query<StudentDetails>(sql, new { Name = "%" + name + "%" }).ToList();
+            try
+            {
+                using var connection = new SqlConnection(connectionString);
+                var parameters = new { SearchName = name };
+                connection.Open();
+                return connection.Query<StudentDetails>("SearchStudent", parameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return new List<StudentDetails>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return new List<StudentDetails>();
+            }
         }
+        public StudentDetails SearchStudentByID(int id)
+        {
+            try
+            {
+                using var connection = new SqlConnection(connectionString);
+                var parameters = new { StudentID = id };
+                connection.Open();
+                return connection.QueryFirstOrDefault<StudentDetails>("SearchStudentByID", parameters, commandType: CommandType.StoredProcedure);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in you  are give the details: {ex.InnerException}");
+                return null;
+            }
+        }
+
     }
 }

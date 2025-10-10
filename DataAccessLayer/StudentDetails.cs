@@ -10,7 +10,7 @@ namespace DataAccessLayer
     {                                                      
         public int id { get; set; } 
         public string Name { get; set; }
-        public int RollNumber { get; set; }
+        public long RollNumber { get; set; }
         public short age { get; set; }
         public long MobileNumber { get; set; }
 
