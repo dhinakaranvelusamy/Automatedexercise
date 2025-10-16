@@ -22,7 +22,7 @@ namespace Automatedexercise
                 ToAddress = "v.dhinakran488@gmail.com",
                 Subject = "Test Email",
                 Content = "Hello from Console App!",
-                GmailAppPassword = "your_gmail_app_password"
+                GmailAppPassword = "geeg ypnd mbai icxo"
             };
 
             string url = "https://localhost:44355/api/email";
