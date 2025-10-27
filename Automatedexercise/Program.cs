@@ -1,44 +1,31 @@
-﻿ using AutomatedExercise;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using System.Net;
 using System.Net.Mail;
 using JasonLibrary;
 using DataAccessLayer;
-using StudentInFormation;
+using StudentInformation;
+using StudentManage;
 using System.Net.Http;
 using System.Text.Json;
+using MailExercise;
+using AutomatedExercise;
 
 
 namespace Automatedexercise
 {
     class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var emailModel = new EmailModel
-            {
-                FromAddress = "velusamy.dhina@gmail.com",
-                ToAddress = "v.dhinakran488@gmail.com",
-                Subject = "Test Email",
-                Content = "Hello from Console App!",
-                GmailAppPassword = "geeg ypnd mbai icxo"
-            };
+            //var Email = new EmailSender();
+            //Email.Emailsend();
 
-            string url = "https://localhost:44355/api/email";
-
-            try
-            {
-                string response = await ApiClient.PostJsonAsync(url, emailModel);
-                Console.WriteLine(response);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error sending email: {ex.Message}");
-            }
+            var obj = new RestApiModel();
+            obj.StudentRestService();
         }
-
     }
 }
+
 
 

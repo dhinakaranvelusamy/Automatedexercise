@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StudentLibrary;
 
 namespace JasonLibrary
 {
-    public class StudentInfo:JasonStudentInfo
+    public class StudentInfor: StudentInfo
     {
 
     }

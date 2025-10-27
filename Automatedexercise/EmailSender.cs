@@ -1,40 +1,43 @@
-﻿//using System;       
-//using System.Net;
-//using System.Net.Mail;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using MailExercise;
-//using MailKit;
+﻿using System;
+using RestAPIClient;
 
-//namespace AutomatedExercise
-//{
-//    public class EmailSender
-//    {
-//        // Your generated App Password goes here
-//        public string gmailAppPassword = "geeg ypmd mbai icxo";
-//        public string fromAddress = "velusamy.dhina@gmail.com";
-        
-//        public void SendEmail()
-//        {
-//            Console.WriteLine("enter the To Email.address");
-//            string toaddress = Console.ReadLine();
-//            Console.WriteLine();
-//            Console.WriteLine("type the subject");
-//            Console.WriteLine();
-//            string subject = Console.ReadLine();
-//            Console.WriteLine("enter the content of your message");
-//            string content = Console.ReadLine();
+namespace AutomatedExercise
+{
+    class EmailSender
+    {
+        public void Emailsend()
+        {
+            // Build email model
+            var emailModel = new EmailModel
+            {
+                FromAddress = "velusamy.dhina@gmail.com",
+                ToAddress = "v.dhinakran488@gmail.com",
+                Subject = "Test Email",
+                Content = "Hello from Console App!",
+                GmailAppPassword = "geeg ypmd mbai icxo"
+            };
 
-//            //SentEmailToAddress Email = new SentEmailToAddress( fromAddress, toaddress, subject, content,  gmailAppPassword);
+            string url = "api/email"; // endpoint part only
+            var apiClient = new MyApiClient("https://localhost:44355");
 
-//            //Email.SendEmail();
-//            //Console.WriteLine();
-//            var email = new MailKitEmailServises(fromAddress, toaddress, subject, content, gmailAppPassword);
-//            email.SendEmail();
-//        }
-//    }
+            try
+            {
+                // 🔹 Run the async POST synchronously
+                string response = apiClient.PostDataAsync(url, emailModel).Result;
 
+                Console.WriteLine("Email sent successfully!");
+                Console.WriteLine($"Server Response: {response}");
+            }
+            catch (AggregateException ex)
+            {
+                // When using .Result, exceptions are wrapped in AggregateException
+                Console.WriteLine($" Error sending email: {ex.InnerException?.Message ?? ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+            }
+        }
+    }
 
-//geeg ypnd mbai icxo
+}

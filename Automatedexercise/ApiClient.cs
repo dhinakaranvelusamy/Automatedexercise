@@ -1,37 +1,107 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Net.Http;
 
-namespace AutomatedExercise
+namespace RestAPIClient
 {
-    class ApiClient
+    public class MyApiClient
     {
-        public static async Task<string> PostJsonAsync<T>(string url, T data)
+        private readonly HttpClient _httpClient;
+        private readonly string baseURL = "https://localhost:44355";
+
+        public MyApiClient()
         {
-            using HttpClient client = new HttpClient();
+            _httpClient = new HttpClient();
+            // Optional: Configure base address for convenience
+            _httpClient.BaseAddress = new Uri(baseURL);
+            // Optional: Add default headers
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            string json = JsonSerializer.Serialize(data);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+        }
 
-            HttpResponseMessage response =  await client.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
+        public MyApiClient(string basUrl)
+        {
+            _httpClient = new HttpClient();
+            // Optional: Configure base address for convenience
+            _httpClient.BaseAddress = new Uri(basUrl);
+            // Optional: Add default headers
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        }
 
-            return await response.Content.ReadAsStringAsync();
+        public async Task<string> GetDataAsync(string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode(); // Throws an exception if the status code is not 2xx
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return responseBody;
+                }
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"{endpoint} - {responseBody}");
+                }
+            }
+            catch (Exception )
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> PostDataAsync<T>(string endpoint, T data)
+        {
+            try
+            {
+                string jsonContent = JsonConvert.SerializeObject(data); // Or System.Text.Json.JsonSerializer.Serialize
+                StringContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PostAsync(endpoint, content);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
+
+            }
+            catch (Exception )
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> PutDataAsync<T>(string endpoint, T data)
+        {
+            try
+            {
+                string jsonContent = JsonConvert.SerializeObject(data);
+                StringContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PutAsync(endpoint, content);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
+            }
+            catch (Exception )
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteDataAsync(string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.DeleteAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception )
+            {
+                throw;
+            }
         }
     }
-
-    public class EmailModel
-    {
-        public string FromAddress { get; set; }
-        public string ToAddress { get; set; }
-        public string Subject { get; set; }
-        public string Content { get; set; }
-        public string GmailAppPassword { get; set; }
-    }
 }
-
-

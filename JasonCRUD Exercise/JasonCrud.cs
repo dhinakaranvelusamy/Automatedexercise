@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using StudentLibrary;
 
 namespace JasonLibrary
 {
@@ -37,7 +38,7 @@ namespace JasonLibrary
             {
                 student.Name = newname;
                 student.Age = newage;
-                student.Mobile = newmobile;
+                student.Mobileno = newmobile;
                 SaveData();
                 return true;
             }
@@ -72,7 +73,7 @@ namespace JasonLibrary
         // SEARCH: MOBILE
         public StudentInfo SearchByMobile(long mobile)
         {
-            return Info.FirstOrDefault(x => x.Mobile == mobile);
+            return Info.FirstOrDefault(x => x.Mobileno == mobile);
         }
 
         // JSON FILE OPERATIONS

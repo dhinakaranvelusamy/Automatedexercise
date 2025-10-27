@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JasonLibrary;
+using Models;
 
 namespace StudentinFormation
 {
@@ -79,7 +80,7 @@ namespace StudentinFormation
             info.Age = Convert.ToInt32(Console.ReadLine());
 
             Console.Write("Enter Mobile: ");
-            info.Mobile = Convert.ToInt64(Console.ReadLine());
+            info.Mobileno = Convert.ToInt64(Console.ReadLine());
 
             stud.AddJason(info);
             Console.WriteLine("Student added successfully.");
@@ -100,7 +101,7 @@ namespace StudentinFormation
             Console.WriteLine();
             foreach (var s in students)
             {
-                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
+                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobileno}");
             }
         }
 
@@ -151,7 +152,7 @@ namespace StudentinFormation
             Console.WriteLine();
             foreach (var s in results)
             {
-                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobile}");
+                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobileno}");
             }
         }
 
@@ -171,7 +172,7 @@ namespace StudentinFormation
 
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
 
-            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
+            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobileno}");
         }
 
         public void SearchByMobile()
@@ -189,7 +190,7 @@ namespace StudentinFormation
             }
             Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
             Console.WriteLine();
-            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobile}");
+            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobileno}");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿// StudentInfo.cs
 using System;
 
-namespace StudentLibrary
+namespace Models
 {
     public class StudentInfo
     {
