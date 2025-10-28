@@ -125,11 +125,22 @@ namespace StudentManage
 
         private void DisplayStudents(List<StudentInfo> students)
         {
-            if (students.Count == 0)
+            if (students == null || students.Count == 0)
+            {
                 Console.WriteLine("No students found.");
-            else
-                foreach (var s in students)
-                    Console.WriteLine($"{s.Id}: {s.Name} ({s.Rollno}) - Age: {s.Age}, Mobile: {s.Mobileno}");
+                return;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($" {"ID",-5}  {"Name",-15}  {"Roll No",-8}  {"Age",-4}  {"Mobile Number",-15} ");
+            Console.WriteLine("__________________________________________________________________");
+            
+            foreach (var s in students)
+            {
+                Console.WriteLine($" {s.Id,-5}  {s.Name,-15}  {s.Rollno,-8}  {s.Age,-4}  {s.Mobileno,-15} ");
+            }
         }
+
     }
 }

@@ -9,91 +9,79 @@ namespace JasonLibrary
 {
     public class JasonCRUD
     {
-        public List<StudentInfo> Info = new List<StudentInfo>();
-        public string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "data.json");
+        private readonly string filePath = "students.json";
 
-        public JasonCRUD()
+        private List<StudentInfo> LoadStudents()
         {
-            LoadData();
+            if (!File.Exists(filePath))
+                return new List<StudentInfo>();
+
+            string json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<StudentInfo>>(json) ?? new List<StudentInfo>();
         }
 
-        // CREATE STUDENT
-        public void AddJason(StudentInfo info)
+        private void SaveStudents(List<StudentInfo> students)
         {
-            Info.Add(info);
-            SaveData();
-        }
-
-        // READ ALL
-        public List<StudentInfo> GetAll()
-        {
-            return Info;
-        }
-
-        // UPDATE
-        public bool UpdateJason(int rollno, string newname, int newage, long newmobile)
-        {
-            var student = Info.FirstOrDefault(x => x.Rollno == rollno);
-            if (student != null)
-            {
-                student.Name = newname;
-                student.Age = newage;
-                student.Mobileno = newmobile;
-                SaveData();
-                return true;
-            }
-            return false;
-        }
-
-        // DELETE
-        public bool DeleteJason(int rollno)
-        {
-            var student = Info.FirstOrDefault(x => x.Rollno == rollno);
-            if (student != null)
-            {
-                Info.Remove(student);
-                SaveData();
-                return true;
-            }
-            return false;
-        }
-
-        // SEARCH: NAME
-        public List<StudentInfo> SearchByName(string keyword)
-        {
-            return Info.Where(x => x.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-
-        // SEARCH: ROLL NUMBER
-        public StudentInfo SearchByRollNo(int rollno)
-        {
-            return Info.FirstOrDefault(x => x.Rollno == rollno);
-        }
-
-        // SEARCH: MOBILE
-        public StudentInfo SearchByMobile(long mobile)
-        {
-            return Info.FirstOrDefault(x => x.Mobileno == mobile);
-        }
-
-        // JSON FILE OPERATIONS
-        private void SaveData()
-        {
-            var json = JsonSerializer.Serialize(Info, new JsonSerializerOptions { WriteIndented = true });
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            string json = JsonSerializer.Serialize(students, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, json);
         }
 
-        private void LoadData()
+        public void AddJason(StudentInfo student)
         {
-            if (!File.Exists(filePath))
-            {
-                Directory.CreateDirectory("Data");
-                File.WriteAllText(filePath,"[]");
-            }
+            var students = LoadStudents();
+            students.Add(student);
+            SaveStudents(students);
+        }
 
-            var json = File.ReadAllText(filePath);
-            Info = JsonSerializer.Deserialize<List<StudentInfo>>(json) ?? new List<StudentInfo>();
+        public List<StudentInfo> ReadJason()
+        {
+            return LoadStudents();
+        }
+
+        public bool UpdateJason(int roll, string name, int age, long mobile)
+        {
+            var students = LoadStudents();
+            var student = students.FirstOrDefault(s => s.Rollno == roll);
+
+            if (student == null)
+                return false;
+
+            student.Name = name;
+            student.Age = age;
+            student.Mobileno = mobile;
+            SaveStudents(students);
+            return true;
+        }
+
+        public bool DeleteJason(int roll)
+        {
+            var students = LoadStudents();
+            var student = students.FirstOrDefault(s => s.Rollno == roll);
+
+            if (student == null)
+                return false;
+
+            students.Remove(student);
+            SaveStudents(students);
+            return true;
+        }
+
+        public List<StudentInfo> SearchByName(string name)
+        {
+            var students = LoadStudents();
+            return students.Where(s => s.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        public StudentInfo SearchByRollNo(int roll)
+        {
+            var students = LoadStudents();
+            return students.FirstOrDefault(s => s.Rollno == roll);
+        }
+
+        public StudentInfo SearchByMobile(long mobile)
+        {
+            var students = LoadStudents();
+            return students.FirstOrDefault(s => s.Mobileno == mobile);
         }
     }
 }

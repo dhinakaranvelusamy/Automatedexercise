@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using JasonLibrary;
-using Models;
+using StudentLibrary;
+
 
 namespace StudentinFormation
 {
@@ -39,7 +40,7 @@ namespace StudentinFormation
                         AddStudent();
                         break;
                     case 2:
-                        ReadStudents();
+                        DisplayStudents();
                         continue;
                     case 3:
                         UpdateStudent();
@@ -87,23 +88,28 @@ namespace StudentinFormation
 
         }
 
-        public void ReadStudents()
+        public void DisplayStudents()
         {
-            var students = stud.GetAll();
+            var students = stud.ReadJason();  
 
-            if (students.Count == 0)
+            if (students == null || students.Count == 0)
             {
                 Console.WriteLine("No students found.");
                 return;
             }
 
-            Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
-            Console.WriteLine();
-            foreach (var s in students)
+            Console.WriteLine("-------------------------------------------------------------");
+            Console.WriteLine("| Roll No | Name       | Age |    Mobile Number   |");
+            Console.WriteLine("-------------------------------------------------------------");
+
+            foreach (var student in students)
             {
-                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobileno}");
+                Console.WriteLine($"| {student.Rollno,-8} | {student.Name,-10} | {student.Age,-3} | {student.Mobileno,-15} |");
             }
+
+            Console.WriteLine("-------------------------------------------------------------");
         }
+
 
         public void UpdateStudent()
         {
