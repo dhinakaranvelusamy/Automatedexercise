@@ -90,7 +90,7 @@ namespace StudentinFormation
 
         public void DisplayStudents()
         {
-            var students = stud.ReadJason();  
+            var students = stud.ReadJason();
 
             if (students == null || students.Count == 0)
             {
@@ -98,16 +98,13 @@ namespace StudentinFormation
                 return;
             }
 
-            Console.WriteLine("-------------------------------------------------------------");
-            Console.WriteLine("| Roll No | Name       | Age |    Mobile Number   |");
-            Console.WriteLine("-------------------------------------------------------------");
 
+            Console.WriteLine("| Roll No  | Name       | Age |    Mobile Number ");
+            Console.WriteLine();
             foreach (var student in students)
             {
                 Console.WriteLine($"| {student.Rollno,-8} | {student.Name,-10} | {student.Age,-3} | {student.Mobileno,-15} |");
             }
-
-            Console.WriteLine("-------------------------------------------------------------");
         }
 
 
