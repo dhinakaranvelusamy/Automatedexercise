@@ -95,23 +95,26 @@ namespace StudentinFormation
                 return;
             }
 
-            Console.WriteLine("+---------+------------------+-----+-----------------+");
-            Console.WriteLine("$Roll No           | Name             | Age | Mobile Number   |");
-            Console.WriteLine("+---------+------------------+-----+-----------------+");
+            // Print header
+            Console.WriteLine(
+                $"{"ID",-5} {"Roll No",-10} {"Name",-15} {"Age",-5} {"Mobile",-15}"
+            );
+            Console.WriteLine(new string('-', 60)); // Separator line
 
-            foreach (var student in students)
+            // Print each student
+            foreach (var s in students)
             {
                 Console.WriteLine(
-                    $"| {student.RollNumber,-7} | {student.Name,-16} | {student.age,-3} | {student.MobileNumber,-15} |");
+                    $"{s.id,-5} {s.RollNumber,-10} {s.Name.Trim(),-15} {s.age,-5} {s.MobileNumber,-15}"
+                );
             }
-
-            Console.WriteLine("+---------+------------------+-----+-----------------+");
         }
 
-    
 
 
-    public void UpdateStudent()
+
+
+        public void UpdateStudent()
         {
             Console.Write("Enter Student ID to update: ");
             int id = Convert.ToInt32(Console.ReadLine());
