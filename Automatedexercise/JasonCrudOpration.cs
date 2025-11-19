@@ -151,11 +151,15 @@ namespace StudentinFormation
                 Console.WriteLine("No matching students found.");
                 return;
             }
-            Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
-            Console.WriteLine();
+
+            // Header
+            Console.WriteLine("| Roll No  | Name                 | Age | Mobile No       |");
+            Console.WriteLine(new string('-', 60));
+
+            // Rows
             foreach (var s in results)
             {
-                Console.WriteLine($"{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobileno}");
+                Console.WriteLine($"| {s.Rollno,-8} | {s.Name,-20} | {s.Age,-3} | {s.Mobileno,-15} |");
             }
         }
 
@@ -173,9 +177,23 @@ namespace StudentinFormation
                 return;
             }
 
-            Console.WriteLine($"{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            Console.WriteLine("=========== STUDENT DETAILS ===========");
+            Console.WriteLine();
 
-            Console.WriteLine($"{student.Rollno,-10}{student.Name,-20}{student.Age,-5}{student.Mobileno}");
+            // Table Header
+            Console.WriteLine("{0,-12} {1,-20} {2,-8} {3,-15}",
+                              "Roll No", "Name", "Age", "Mobile No");
+
+            Console.WriteLine(new string('-', 60));
+
+            // Table Row
+            Console.WriteLine("{0,-12} {1,-20} {2,-8} {3,-15}",
+                              student.Rollno,
+                              student.Name,
+                              student.Age,
+                              student.Mobileno);
+
+            Console.WriteLine();
         }
 
         public void SearchByMobile()

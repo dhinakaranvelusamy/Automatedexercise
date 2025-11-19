@@ -1,0 +1,24 @@
+﻿@model IEnumerable<StudentLibrary.StudentInfo>
+
+<h1>Student List</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Mobile No</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Rollno</td>
+                <td>@student.Name</td>
+                <td>@student.Age</td>
+                <td>@student.Mobileno</td>
+            </tr>
+        }
+    </tbody>
+</table>
