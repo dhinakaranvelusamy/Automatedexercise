@@ -1,22 +1,20 @@
 ﻿using Excersice_MVC.Models;
+using Excersice_MVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using JasonLibrary;  
-using StudentLibrary;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 namespace Excersice_MVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly JasonCRUD _service;
+        private readonly IJasonCRUD _service;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IJasonCRUD service)
         {
             _logger = logger;
-            _service = new JasonCRUD(); 
+            _service = service;
         }
 
         public IActionResult Index()
@@ -29,7 +27,8 @@ namespace Excersice_MVC.Controllers
             return View();
         }
 
-        public IActionResult List()
+        // <-- Action name "StudentList" so /Home/StudentList resolves correctly
+        public IActionResult StudentList()
         {
             List<StudentInfo> students = _service.ReadJason();
             return View(students);

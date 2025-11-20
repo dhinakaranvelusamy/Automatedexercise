@@ -1,6 +1,11 @@
-﻿@model IEnumerable<StudentLibrary.StudentInfo>
+﻿@model IEnumerable<Excersice_MVC.Models.StudentInfo>
 
-<h1>Student List</h1>
+@{
+    ViewData["Title"] = "Student List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
 <table class="table table-bordered">
     <thead>
         <tr>

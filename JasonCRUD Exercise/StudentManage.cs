@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StudentLibrary;
+using Excersice_MVC.Models;
 using JasonLibrary; // Assuming StudentInfo is defined here
 
 namespace JasonCRUD_Exercise

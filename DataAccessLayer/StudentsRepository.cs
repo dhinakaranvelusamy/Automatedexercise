@@ -11,6 +11,7 @@ namespace DataAccessLayer
     {
         private readonly string connectionString = "Server=DESKTOP-1U0BM0H\\SQLEXPRESS;Database=Bacth11SQLQuery;User Id=sa;Password=Anaiyaan@123;";
 
+
         public bool AddStudent(StudentDetails student)
         {
             try

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JasonLibrary;
-using StudentLibrary;
+using Excersice_MVC.Models;
 
 
 namespace StudentinFormation
@@ -80,7 +80,7 @@ namespace StudentinFormation
             Console.Write("Enter Age: ");
             info.Age = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("Enter Mobile: ");
+            Console.Write("Enter Mobileno: ");
             info.Mobileno = Convert.ToInt64(Console.ReadLine());
 
             stud.AddJason(info);
@@ -120,7 +120,7 @@ namespace StudentinFormation
             Console.Write("Enter New Age: ");
             int age = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("Enter New Mobile: ");
+            Console.Write("Enter New Mobileno: ");
             long mobile = Convert.ToInt64(Console.ReadLine());
 
             bool updated = stud.UpdateJason(roll, name, age, mobile);

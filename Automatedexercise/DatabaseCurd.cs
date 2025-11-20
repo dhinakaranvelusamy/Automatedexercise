@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataAccessLayer;
-using StudentLibrary;
+using Excersice_MVC;
 
 namespace StudentinFormation
 {
@@ -74,6 +74,7 @@ namespace StudentinFormation
             Console.Write("Enter Age: ");
             student.age = Convert.ToInt32(Console.ReadLine());
 
+            Console.Write("enter the MobileNO");
             if (!long.TryParse(Console.ReadLine(), out long mobile))
             {
                 Console.WriteLine("Invalid mobile number!");
