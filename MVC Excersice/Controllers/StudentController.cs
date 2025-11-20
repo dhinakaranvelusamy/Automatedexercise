@@ -20,7 +20,7 @@ namespace MVC_Excersice.Controllers
         public IActionResult Details(int id)
         {
             var student = _repo.GetStudentByID(id);
-            if (student == null) return NotFound();
+            if (student == null) return NotFound(); 
             return View(student);
         }
 
@@ -69,13 +69,12 @@ namespace MVC_Excersice.Controllers
             }
             return View(student);
         }
-
         // GET: /Student/Delete/1
         public IActionResult Delete(int id)
         {
             var student = _repo.GetStudentByID(id);
             if (student == null) return NotFound();
-            return View(student);
+            return View(student); // Pass student to view
         }
 
         // POST: /Student/Delete/1
@@ -84,15 +83,11 @@ namespace MVC_Excersice.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             bool deleted = _repo.DeleteStudent(id);
-            return RedirectToAction(nameof(Student));
-        }
 
-        // Optional: Search by Name
-        [HttpGet]
-        public IActionResult Search(string name)
-        {
-            var results = _repo.SearchStudentsByName(name);
-            return View("Index", results);
-        }
+            if (!deleted)
+                ModelState.AddModelError("", "Error deleting student. Check logs.");
+
+            return RedirectToAction(nameof(Student));
+        }    
     }
 }

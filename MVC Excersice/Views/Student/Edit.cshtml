@@ -1,0 +1,30 @@
+﻿@model DataAccessLayer.StudentDetails
+
+<h2>Edit Student</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="id" />
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="RollNumber"></label>
+        <input asp-for="RollNumber" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="age"></label>
+        <input asp-for="age" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="MobileNumber"></label>
+        <input asp-for="MobileNumber" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+</form>
