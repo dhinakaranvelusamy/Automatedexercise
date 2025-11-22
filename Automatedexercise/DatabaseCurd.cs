@@ -162,7 +162,7 @@ namespace StudentinFormation
             string name = Console.ReadLine();
 
             var results = stud.SearchStudentsByName(name);
-
+             Console.Write();
             if (results.Count == 0)
             {
                 Console.WriteLine("No matching students found.");
