@@ -83,7 +83,27 @@ namespace StudentInformation
             Console.Write("Enter RollNo to delete: ");
             int id = int.Parse(Console.ReadLine());
             bool deleted = stud.DeleteStudent(id);
-            Console.WriteLine(deleted ? "Deleted successfully." : "Student not found.");
+            Console.WriteLine(deleted ? "Student deleted successfully." : "Student not found.");
+        }
+
+        public void SearchByName()
+        {
+            Console.Write("Enter name to search: ");
+            string name = Console.ReadLine();
+
+            var results = stud.SearchStudentsByName(name);
+             Console.Write();
+            if (results.Count == 0)
+            {
+                Console.WriteLine("No matching students found.");
+                return;
+            }
+
+            Console.WriteLine($"{"ID",-5}{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
+            foreach (var s in results)
+            {
+                Console.WriteLine($"{s.id,-5}{s.RollNumber,-10}{s.Name,-20}{s.age,-5}{s.MobileNumber}");
+            }
         }
 
         private void SearchByID()
