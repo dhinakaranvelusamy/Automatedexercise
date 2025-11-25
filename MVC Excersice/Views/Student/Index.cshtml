@@ -1,4 +1,4 @@
-﻿﻿@model DataAccessLayer.StudentDetails
+﻿@model IEnumerable<DataAccessLayer.StudentDetails>
 
 <h1>Student List</h1>
 
@@ -15,17 +15,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var student in Model)
+        @foreach (var s in Model)
         {
             <tr>
-                <td>@student.RollNumber</td>
-                <td>@student.Name</td>
-                <td>@student.age</td>
-                <td>@student.MobileNumber</td>
+                <td>@s.RollNumber</td>
+                <td>@s.Name</td>
+                <td>@s.Age</td>
+                <td>@s.MobileNumber</td>
                 <td>
-                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@student.id">Edit</a>
-                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@student.id">Details</a>
-                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@student.id">Delete</a>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@s.ID">Edit</a>
+                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@s.ID">Details</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@s.ID">Delete</a>
                 </td>
             </tr>
         }

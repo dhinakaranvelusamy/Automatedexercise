@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
@@ -16,35 +14,34 @@ namespace DataAccessLayer
         // ADD
         public bool AddStudent(StudentDetails student)
         {
-            try
-            {
-                using var connection = new SqlConnection(connectionString);
+            using var connection = new SqlConnection(connectionString);
 
-                var param = new
-                {
-                    Name = student.Name,
-                    RollNumber = student.RollNumber,
-                    Age = student.age,
-                    MobileNumber = student.MobileNumber
-                };
-
-                int affected = connection.Execute("AddStudent", param, commandType: CommandType.StoredProcedure);
-                return affected > 0;
-            }
-            catch
+            var param = new
             {
-                return false;
-            }
+                Name = student.Name,
+                RollNumber = student.RollNumber,
+                Age = student.Age,
+                MobileNumber = student.MobileNumber
+            };
+
+            int affected = connection.Execute("AddStudent", param, commandType: CommandType.StoredProcedure);
+            return affected > 0;
         }
 
         // GET ALL
         public List<StudentDetails> GetStudents()
         {
-            using var connection = new SqlConnection(connectionString);
-            return connection.Query<StudentDetails>(
-                "GetAllStudent",
-                commandType: CommandType.StoredProcedure
-            ).ToList();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open(); // IMPORTANT
+
+                var students = connection.Query<StudentDetails>(
+                    "GetAllStudent",
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                return students;
+            }
         }
 
         // GET BY ID
@@ -59,18 +56,6 @@ namespace DataAccessLayer
             );
         }
 
-        // SEARCH BY NAME
-        public List<StudentDetails> SearchStudentsByName(string name)
-        {
-            using var connection = new SqlConnection(connectionString);
-
-            return connection.Query<StudentDetails>(
-                "SearchStudent",
-                new { SearchName = name },
-                commandType: CommandType.StoredProcedure
-            ).ToList();
-        }
-
         // UPDATE
         public bool UpdateStudent(StudentDetails student)
         {
@@ -78,10 +63,10 @@ namespace DataAccessLayer
 
             var param = new
             {
-                StudentID = student.id,
+                StudentID = student.ID,
                 Name = student.Name,
-                Age = student.age,
-                Rollnumber = student.RollNumber,  // MUST MATCH SP EXACTLY!
+                RollNumber = student.RollNumber,
+                Age = student.Age,
                 MobileNumber = student.MobileNumber
             };
 

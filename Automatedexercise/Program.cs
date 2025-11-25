@@ -18,7 +18,7 @@ namespace Automatedexercise
             {
                 Console.WriteLine("\n===== AUTOMATED SCHOOL SYSTEM =====");
                 Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. Database CRUD Operations");
+                Console.WriteLine("1. Json CRUD Operations");
                 Console.WriteLine("2. Send Email");
                 Console.WriteLine("3. REST API Student Service");
                 Console.WriteLine("4. JSON Student Operations");

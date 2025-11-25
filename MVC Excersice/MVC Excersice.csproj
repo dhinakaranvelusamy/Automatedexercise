@@ -14,7 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Automatedexercise\AutomatedExercise.csproj" />
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
-    <ProjectReference Include="..\JasonCRUD Exercise\JasonCRUD Exercise.csproj" />
   </ItemGroup>
 
 </Project>

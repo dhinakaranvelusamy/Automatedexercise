@@ -4,6 +4,10 @@ namespace MVC_Excersice.Models
 {
     public class StudentData
     {
+        [Key]                       
+        public int ID { get; set; }
+
+        [Required(ErrorMessage = "Roll number is required")]
         public int Rollno { get; set; }
 
         [Required(ErrorMessage = "Name is required")]

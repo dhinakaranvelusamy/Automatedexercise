@@ -1,7 +1,5 @@
-﻿
-using DataAccessLayer;
+﻿using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
-using MVC_Excersice.Models;
 using System.Collections.Generic;
 
 namespace MVC_Excersice.Controllers
@@ -10,84 +8,78 @@ namespace MVC_Excersice.Controllers
     {
         private readonly StudentsRepository _repo = new StudentsRepository();
 
-        // GET: /Student
+        // LIST
         public IActionResult Student()
         {
             List<StudentDetails> students = _repo.GetStudents();
             return View("Index", students);
         }
 
-        // GET: /Student/Details/1
+        // DETAILS
         public IActionResult Details(int id)
         {
             var student = _repo.GetStudentByID(id);
             if (student == null) return NotFound();
+
             return View(student);
         }
 
-        // GET: /Student/Add
+        // ADD GET
         public IActionResult Add()
         {
             return View();
         }
 
-        // POST: /Student/Add
+        // ADD POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add(StudentDetails student)
         {
             if (ModelState.IsValid)
             {
-                bool added = _repo.AddStudent(student);
-                if (added)
+                if (_repo.AddStudent(student))
                     return RedirectToAction(nameof(Student));
-                else
-                    ModelState.AddModelError("", "Error adding student. Check logs.");
             }
             return View(student);
         }
 
-        // GET: /Student/Edit/1
+        // EDIT GET
         public IActionResult Edit(int id)
         {
             var student = _repo.GetStudentByID(id);
             if (student == null) return NotFound();
+
             return View(student);
         }
 
-        // POST: /Student/Edit/1
+        // EDIT POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(StudentDetails student)
         {
             if (ModelState.IsValid)
             {
-                bool updated = _repo.UpdateStudent(student);
-                if (updated)
+                if (_repo.UpdateStudent(student))
                     return RedirectToAction(nameof(Student));
-                else
-                    ModelState.AddModelError("", "Error updating student. Check logs.");
             }
             return View(student);
         }
-        // GET: /Student/Delete/1
+
+        // DELETE GET
         public IActionResult Delete(int id)
         {
             var student = _repo.GetStudentByID(id);
             if (student == null) return NotFound();
-            return View(student); // Pass student to view
+
+            return View(student);
         }
 
-        // POST: /Student/Delete/1
+        // DELETE POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            bool deleted = _repo.DeleteStudent(id);
-
-            if (!deleted)
-                ModelState.AddModelError("", "Error deleting student. Check logs.");
-
+            _repo.DeleteStudent(id);
             return RedirectToAction(nameof(Student));
         }
     }

@@ -92,7 +92,7 @@ namespace StudentInformation
             string name = Console.ReadLine();
 
             var results = stud.SearchStudentsByName(name);
-             Console.Write();
+             Console.WriteLine();
             if (results.Count == 0)
             {
                 Console.WriteLine("No matching students found.");
@@ -102,7 +102,7 @@ namespace StudentInformation
             Console.WriteLine($"{"ID",-5}{"Roll No",-10}{"Name",-20}{"Age",-5}{"Mobile"}");
             foreach (var s in results)
             {
-                Console.WriteLine($"{s.id,-5}{s.RollNumber,-10}{s.Name,-20}{s.age,-5}{s.MobileNumber}");
+                Console.WriteLine($"{s.Id,-5}{s.Rollno,-10}{s.Name,-20}{s.Age,-5}{s.Mobileno}");
             }
         }
 
