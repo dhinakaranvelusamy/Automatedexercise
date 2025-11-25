@@ -6,6 +6,7 @@ using System.Text.Json;
 using JasonLibrary;
 using StudentinFormation;
 using Models;
+using DataAccessLayer;
 
 namespace StudentInformation
 {
@@ -61,6 +62,11 @@ namespace StudentInformation
             existing.Mobileno = student.Mobileno;
             SaveData();
             return true;
+        }
+
+        internal bool AddStudent(StudentData student)
+        {
+            throw new NotImplementedException();
         }
 
         public bool DeleteStudent(int id)

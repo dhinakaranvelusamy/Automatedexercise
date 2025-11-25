@@ -1,4 +1,5 @@
-﻿using DataAccessLayer;
+﻿
+using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Excersice.Models;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace MVC_Excersice.Controllers
         public IActionResult Details(int id)
         {
             var student = _repo.GetStudentByID(id);
-            if (student == null) return NotFound(); 
+            if (student == null) return NotFound();
             return View(student);
         }
 
@@ -88,6 +89,6 @@ namespace MVC_Excersice.Controllers
                 ModelState.AddModelError("", "Error deleting student. Check logs.");
 
             return RedirectToAction(nameof(Student));
-        }    
+        }
     }
 }
